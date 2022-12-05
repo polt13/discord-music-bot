@@ -459,6 +459,7 @@ async def on_voice_state_update(member, before, after):
 
 try:
     keep_alive.keep_alive()
-    client.run('PLACEHOLDER')
+    import os
+    client.run(os.getenv('bot'))
 except discord.errors.HTTPException:
     os.system("kill 1")
