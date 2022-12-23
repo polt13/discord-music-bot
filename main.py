@@ -63,13 +63,7 @@ async def __play_track(interaction,song:str):
 
     voice = interaction.guild.voice_client
     
-
-    try:
-        ytdl.cache.remove()
-    except:
-        print("clearing cache failed\n")
-
-    _songs = await isPlaylist(entry)
+    _songs = isPlaylist(entry)
 
     if not _songs:
         _songs = [entry]
@@ -86,7 +80,7 @@ async def __play_track(interaction,song:str):
         src = FFmpegOpusAudio(surl, **ffmpeg_options)
         player = voice.play(
             src,
-            after=lambda x: next_up2(interaction, server),
+            after=lambda x: asyncio.run(_next_2(interaction, server))
         )
         currentlyPlaying[server] = title
         await __disp_curr_song(interaction.followup.send,title)
@@ -115,10 +109,8 @@ async def on_ready():
     await client.change_presence(activity=discord.Activity(
         name="$play", type=discord.ActivityType.listening))
 
-def next_up2(interaction,server):
-    client.loop.create_task(_next_2(interaction,server))
 
-async def _next_2(interaction,server):
+async def _next_2(interaction,server) -> asyncio.coroutine:
     if queues[server] != []:
         await __disp_curr_song(interaction.followup.send,queues[server][-1][1])
         _vid = queues[server].pop(0)  # (entry,title)
@@ -126,7 +118,7 @@ async def _next_2(interaction,server):
         src = FFmpegOpusAudio(surl, **ffmpeg_options)
         voice = interaction.guild.voice_client
         currentlyPlaying[server] = title
-        player = voice.play(src, after=lambda x: next_up2(interaction, server))
+        player = voice.play(src, after=lambda x: asyncio.run(_next_2(interaction, server)))
 
 @client.tree.command(name = "stop", description = "Stop streaming")
 async def __stop_track(interaction):
@@ -201,12 +193,8 @@ async def __remove_track(interaction, index:int):
 
 
 #old ctx
-def next_up(ctx, server):
-    client.loop.create_task(_next_(
-        ctx, server))  # add playing task to the event loop
 
-
-async def _next_(ctx, server):
+async def _next_(ctx, server) -> asyncio.coroutine:
     if queues[server] != []:
         _vid = queues[server].pop(0)  # (entry,title)
         surl, title = surl_extract(_vid[0]), _vid[1]
@@ -214,7 +202,7 @@ async def _next_(ctx, server):
         voice = ctx.voice_client
         currentlyPlaying[server] = title
         await disp_curr_song(ctx, title)
-        player = voice.play(src, after=lambda x: next_up(ctx, server))
+        player = voice.play(src, after=lambda x: asyncio.run(_next_(ctx, server)))
 
 
 async def disp_curr_song(ctx, title):
@@ -310,7 +298,7 @@ async def _swap(ctx, index1, index2):
             title="Bad index", type="rich", color=discord.Color.dark_red()))
 
 
-async def isPlaylist(entry):
+def isPlaylist(entry):
     import validators
 
     if validators.url(entry) and ("/playlist?list=" in entry or
@@ -348,7 +336,7 @@ async def _play(ctx, *, entry):
     except:
         print("clearing cache failed\n")
 
-    _songs = await isPlaylist(entry)
+    _songs = isPlaylist(entry)
 
     if not _songs:
         _songs = [entry]
@@ -366,7 +354,7 @@ async def _play(ctx, *, entry):
         src = FFmpegOpusAudio(surl, **ffmpeg_options)
         player = voice.play(
             src,
-            after=lambda x: next_up(ctx, server),
+            after=lambda x: asyncio.run(_next_(ctx, server))
         )
         currentlyPlaying[server] = title
         await disp_curr_song(ctx, title)
