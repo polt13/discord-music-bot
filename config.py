@@ -8,6 +8,11 @@ prefix = "$"
 ydl_options = {
     "format": "bestaudio/best",
     "outtmpl": "%(extractor)s-%(id)s-%(title)s.%(ext)s",
+    'postprocessors': [{
+        'key': 'FFmpegExtractAudio',
+        'preferredcodec': 'mp3',
+        'preferredquality': '192',
+    }],
     "restrictfilenames": True,
     "nocheckcertificate": True,
     "default_search": "auto",
