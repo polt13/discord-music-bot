@@ -1,6 +1,6 @@
 [[package]]
 name = "aiohttp"
-version = "3.8.3"
+version = "3.8.4"
 description = "Async http client/server framework (asyncio)"
 category = "main"
 optional = false
@@ -10,7 +10,7 @@ python-versions = ">=3.6"
 aiosignal = ">=1.1.2"
 async-timeout = ">=4.0.0a3,<5.0"
 attrs = ">=17.3.0"
-charset-normalizer = ">=2.0,<3.0"
+charset-normalizer = ">=2.0,<4.0"
 frozenlist = ">=1.1.1"
 multidict = ">=4.5,<7.0"
 yarl = ">=1.0,<2.0"
@@ -20,11 +20,11 @@ speedups = ["aiodns", "brotli", "cchardet"]
 
 [[package]]
 name = "aiosignal"
-version = "1.2.0"
+version = "1.3.1"
 description = "aiosignal: a list of registered asynchronous callbacks"
 category = "main"
 optional = false
-python-versions = ">=3.6"
+python-versions = ">=3.7"
 
 [package.dependencies]
 frozenlist = ">=1.1.0"
@@ -39,17 +39,19 @@ python-versions = ">=3.6"
 
 [[package]]
 name = "attrs"
-version = "22.1.0"
+version = "22.2.0"
 description = "Classes Without Boilerplate"
 category = "main"
 optional = false
-python-versions = ">=3.5"
+python-versions = ">=3.6"
 
 [package.extras]
-dev = ["coverage[toml] (>=5.0.2)", "hypothesis", "pympler", "pytest (>=4.3.0)", "mypy (>=0.900,!=0.940)", "pytest-mypy-plugins", "zope.interface", "furo", "sphinx", "sphinx-notfound-page", "pre-commit", "cloudpickle"]
-docs = ["furo", "sphinx", "zope.interface", "sphinx-notfound-page"]
-tests = ["coverage[toml] (>=5.0.2)", "hypothesis", "pympler", "pytest (>=4.3.0)", "mypy (>=0.900,!=0.940)", "pytest-mypy-plugins", "zope.interface", "cloudpickle"]
-tests_no_zope = ["coverage[toml] (>=5.0.2)", "hypothesis", "pympler", "pytest (>=4.3.0)", "mypy (>=0.900,!=0.940)", "pytest-mypy-plugins", "cloudpickle"]
+cov = ["attrs", "coverage-enable-subprocess", "coverage[toml] (>=5.3)"]
+dev = ["attrs"]
+docs = ["furo", "sphinx", "myst-parser", "zope.interface", "sphinx-notfound-page", "sphinxcontrib-towncrier", "towncrier"]
+tests = ["attrs", "zope.interface"]
+tests-no-zope = ["hypothesis", "pympler", "pytest (>=4.3.0)", "pytest-xdist", "cloudpickle", "mypy (>=0.971,<0.990)", "pytest-mypy-plugins"]
+tests_no_zope = ["hypothesis", "pympler", "pytest (>=4.3.0)", "pytest-xdist", "cloudpickle", "mypy (>=0.971,<0.990)", "pytest-mypy-plugins"]
 
 [[package]]
 name = "brotli"
@@ -72,7 +74,7 @@ cffi = ">=1.0.0"
 
 [[package]]
 name = "certifi"
-version = "2022.9.24"
+version = "2022.12.7"
 description = "Python package for providing Mozilla's CA Bundle."
 category = "main"
 optional = false
@@ -91,14 +93,11 @@ pycparser = "*"
 
 [[package]]
 name = "charset-normalizer"
-version = "2.1.1"
+version = "3.1.0"
 description = "The Real First Universal Charset Detector. Open, modern and actively maintained alternative to Chardet."
 category = "main"
 optional = false
-python-versions = ">=3.6.0"
-
-[package.extras]
-unicode_backport = ["unicodedata2"]
+python-versions = ">=3.7.0"
 
 [[package]]
 name = "click"
@@ -128,19 +127,8 @@ optional = false
 python-versions = ">=3.5"
 
 [[package]]
-name = "discord"
-version = "2.0.0"
-description = "A mirror package for discord.py. Please install that instead."
-category = "main"
-optional = false
-python-versions = "*"
-
-[package.dependencies]
-"discord.py" = ">=2.0.0"
-
-[[package]]
 name = "discord.py"
-version = "2.0.1"
+version = "2.2.2"
 description = "A Python wrapper for the Discord API"
 category = "main"
 optional = false
@@ -157,7 +145,7 @@ voice = ["PyNaCl (>=1.3.0,<1.6)"]
 
 [[package]]
 name = "flask"
-version = "2.2.2"
+version = "2.2.3"
 description = "A simple framework for building complex web applications."
 category = "main"
 optional = false
@@ -168,7 +156,7 @@ click = ">=8.0"
 importlib-metadata = {version = ">=3.6.0", markers = "python_version < \"3.10\""}
 itsdangerous = ">=2.0"
 Jinja2 = ">=3.0"
-Werkzeug = ">=2.2.3"
+Werkzeug = ">=2.2.2"
 
 [package.extras]
 async = ["asgiref (>=3.2)"]
@@ -176,7 +164,7 @@ dotenv = ["python-dotenv"]
 
 [[package]]
 name = "frozenlist"
-version = "1.3.1"
+version = "1.3.3"
 description = "A list-like structure which implements collections.abc.MutableSequence"
 category = "main"
 optional = false
@@ -192,7 +180,7 @@ python-versions = ">=3.5"
 
 [[package]]
 name = "importlib-metadata"
-version = "5.0.0"
+version = "6.1.0"
 description = "Read metadata from Python packages"
 category = "main"
 optional = false
@@ -202,9 +190,9 @@ python-versions = ">=3.7"
 zipp = ">=0.5"
 
 [package.extras]
-docs = ["sphinx (>=3.5)", "jaraco.packaging (>=9)", "rst.linker (>=1.9)", "furo", "jaraco.tidelift (>=1.4)"]
+docs = ["sphinx (>=3.5)", "jaraco.packaging (>=9)", "rst.linker (>=1.9)", "furo", "sphinx-lint", "jaraco.tidelift (>=1.4)"]
 perf = ["ipython"]
-testing = ["pytest (>=6)", "pytest-checkdocs (>=2.4)", "pytest-flake8", "flake8 (<5)", "pytest-cov", "pytest-enabler (>=1.3)", "packaging", "pyfakefs", "flufl.flake8", "pytest-perf (>=0.9.2)", "pytest-black (>=0.3.7)", "pytest-mypy (>=0.9.1)", "importlib-resources (>=1.3)"]
+testing = ["pytest (>=6)", "pytest-checkdocs (>=2.4)", "flake8 (<5)", "pytest-cov", "pytest-enabler (>=1.3)", "packaging", "pyfakefs", "flufl.flake8", "pytest-perf (>=0.9.2)", "pytest-black (>=0.3.7)", "pytest-mypy (>=0.9.1)", "pytest-flake8", "importlib-resources (>=1.3)"]
 
 [[package]]
 name = "itsdangerous"
@@ -230,7 +218,7 @@ i18n = ["Babel (>=2.7)"]
 
 [[package]]
 name = "markupsafe"
-version = "2.1.1"
+version = "2.1.2"
 description = "Safely add untrusted strings to HTML/XML markup."
 category = "main"
 optional = false
@@ -238,7 +226,7 @@ python-versions = ">=3.7"
 
 [[package]]
 name = "multidict"
-version = "6.0.2"
+version = "6.0.4"
 description = "multidict implementation"
 category = "main"
 optional = false
@@ -262,7 +250,7 @@ python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*"
 
 [[package]]
 name = "pycryptodomex"
-version = "3.15.0"
+version = "3.17"
 description = "Cryptographic library for Python"
 category = "main"
 optional = false
@@ -307,7 +295,7 @@ python-versions = ">=3.7"
 
 [[package]]
 name = "werkzeug"
-version = "2.2.2"
+version = "2.2.3"
 description = "The comprehensive WSGI web application library."
 category = "main"
 optional = false
@@ -321,7 +309,7 @@ watchdog = ["watchdog"]
 
 [[package]]
 name = "yarl"
-version = "1.8.1"
+version = "1.8.2"
 description = "Yet another URL library"
 category = "main"
 optional = false
@@ -333,7 +321,7 @@ multidict = ">=4.0"
 
 [[package]]
 name = "yt-dlp"
-version = "2022.10.4"
+version = "2023.3.4"
 description = "A youtube-dl fork with additional features and patches"
 category = "main"
 optional = false
@@ -349,20 +337,20 @@ websockets = "*"
 
 [[package]]
 name = "zipp"
-version = "3.10.0"
+version = "3.15.0"
 description = "Backport of pathlib-compatible object wrapper for zip files"
 category = "main"
 optional = false
 python-versions = ">=3.7"
 
 [package.extras]
-docs = ["sphinx (>=3.5)", "jaraco.packaging (>=9)", "rst.linker (>=1.9)", "furo", "jaraco.tidelift (>=1.4)"]
-testing = ["pytest (>=6)", "pytest-checkdocs (>=2.4)", "pytest-flake8", "flake8 (<5)", "pytest-cov", "pytest-enabler (>=1.3)", "jaraco.itertools", "func-timeout", "jaraco.functools", "more-itertools", "pytest-black (>=0.3.7)", "pytest-mypy (>=0.9.1)"]
+docs = ["sphinx (>=3.5)", "jaraco.packaging (>=9)", "rst.linker (>=1.9)", "furo", "sphinx-lint", "jaraco.tidelift (>=1.4)"]
+testing = ["pytest (>=6)", "pytest-checkdocs (>=2.4)", "flake8 (<5)", "pytest-cov", "pytest-enabler (>=1.3)", "jaraco.itertools", "jaraco.functools", "more-itertools", "big-o", "pytest-black (>=0.3.7)", "pytest-mypy (>=0.9.1)", "pytest-flake8"]
 
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.8"
-content-hash = "1200790b06a4ee4d59eb8795af7f364a40b8902276ebb2bd68c7ceb452d147a3"
+content-hash = "5deb4148c05405b2b9e49ab0d0bc90cdaeac07b5942e658c5642d5f7a68de78b"
 
 [metadata.files]
 aiohttp = []
@@ -377,7 +365,6 @@ charset-normalizer = []
 click = []
 colorama = []
 decorator = []
-discord = []
 "discord.py" = []
 flask = []
 frozenlist = []
