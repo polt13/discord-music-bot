@@ -1,16 +1,14 @@
 [tool.poetry]
-name = "repl_python3_Dandelionnew"
+name = "dandelionnew"
 version = "0.1.0"
 description = ""
 authors = ["Your Name <you@example.com>"]
 
 [tool.poetry.dependencies]
 python = "^3.8"
-Flask = "^2.3.2"
-PyNaCl = "^1.5.0"
-validators = "^0.20.0"
+discord = "2.2.3"
 yt-dlp = "2023.3.4"
-"discord.py" = "2.2.2"
+Flask = "2.3.2"
 
 [tool.poetry.dev-dependencies]
 
