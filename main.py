@@ -117,10 +117,10 @@ async def __next_song(interaction, server):
   if queues[server] != []:
     await __disp_curr_song(interaction.followup.send, queues[server][-1][1], queues[server][-1][2])
     _vid = queues[server].pop(0)
-    surl, title = extract_metadata(_vid)
+    surl, title, thumbnail = _vid
     src = FFmpegOpusAudio(surl, **ffmpeg_options)
     voice = interaction.guild.voice_client
-    currentlyPlaying[server] = title
+    currentlyPlaying[server] = (title,thumbnail)
     player = voice.play(
       src, after=lambda s: client.loop.create_task(__next_song(interaction, server)))
   else:
