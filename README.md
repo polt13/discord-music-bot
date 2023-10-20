@@ -6,28 +6,21 @@
 
 **HOW TO USE**
 
-Prefix every command with '$'
+🟣 `/play` queues/plays a track (title or url) or a playlist (url only)
 
-🟣 p / play queues/plays a track (title or url) or a playlist (url only)
+🟣 `/skip`  skips to next track in queue
 
-🟣 skip / next skips to next track in queue
+🟣 `/list` displays current queue
 
-🟣 list / dq displays current queue
+🟣 `/pause` pauses, `/resume` resumes 
 
-🟣 pau pauses, res resumes and dc disconnects the bot from the VC
+🟣 `/now` shows currently playing song
 
-🟣 now shows currently playing song
+🟣 `/clear` clears the queue
 
-🟣 clear clears the queue
+🟣 `/stop` clears queue and stops current session
 
-🟣 stop clears queue and stops current session
-
-🟣 remove / rq track to remove a track from a queue
-
-🟣 swap track1 track2 to switch the order of two tracks in the queue
-
-P.S. You can alter the config parameters for your own bot in config.py
-
+🟣 `/rm` removes a track from a queue
 
 **SETUP**
 
