@@ -77,17 +77,18 @@ async def __play_track(interaction: discord.Interaction, song: str):
   else:
     queues[server] = [ extract_metadata(s) for s in _songs]
 
-  if not interaction.guild.voice_client.is_playing(
-  ) and not interaction.guild.voice_client.is_paused():
+  voice = interaction.guild.voice_client
+
+  channel  = interaction.channel
+  
+  if not voice.is_playing(
+  ) and not voice.is_paused():
     _vid = queues[server].pop(0)  # (entry,title)
     surl, title, thumbnail = _vid
     src = FFmpegOpusAudio(surl, **ffmpeg_options)
-    player = voice.play(
-      src,
-      after=lambda s: client.loop.create_task(__next_song(interaction, server)))
     currentlyPlaying[server] = (title, thumbnail)
     await __disp_curr_song(interaction.followup.send, title, thumbnail)
-
+    voice.play(src, after = lambda s: client.loop.create_task(__next_song(server,channel)))
   else:
     emb = discord.Embed(
       title="🔗 Queued",
@@ -97,6 +98,8 @@ async def __play_track(interaction: discord.Interaction, song: str):
     )
     emb.set_image(url=queues[server][-1][2])
     await interaction.followup.send(embed=emb)
+
+
 
 
 @client.tree.command(name="skip", description="Skip currently playing track")
@@ -113,26 +116,29 @@ async def on_ready():
     name="/play", type=discord.ActivityType.listening))
 
 
-async def __next_song(interaction, server):
-  if queues[server] != []:
-    await __disp_curr_song(interaction.followup.send, queues[server][-1][1], queues[server][-1][2])
-    _vid = queues[server].pop(0)
-    surl, title, thumbnail = _vid
-    src = FFmpegOpusAudio(surl, **ffmpeg_options)
-    voice = interaction.guild.voice_client
-    currentlyPlaying[server] = (title,thumbnail)
-    player = voice.play(
-      src, after=lambda s: client.loop.create_task(__next_song(interaction, server)))
-  else:
+async def __next_song(server,channel):
+  
+  guild = client.get_guild(server)
+  voice = guild.voice_client
+  if queues[server] == []:
     await asyncio.sleep(30)
-    if interaction.guild.voice_client is not None and not interaction.guild.voice_client.is_playing(
+    if voice is not None and not voice.is_playing(
     ):
-      await interaction.guild.voice_client.disconnect()
-
+      await voice.disconnect()
+      return
+  await __disp_curr_song(channel.send, queues[server][-1][1], queues[server][-1][2])
+  _vid = queues[server].pop(0)
+  surl, title, thumbnail = _vid
+  src = FFmpegOpusAudio(surl, **ffmpeg_options)
+  currentlyPlaying[server] = (title,thumbnail)
+  voice.play(src, after = lambda s: client.loop.create_task(__next_song(server,channel)))
+  
+  
 
 @client.tree.command(name="stop", description="Stop streaming")
 async def __stop_track(interaction: discord.Interaction):
-  if interaction.guild.voice_client is not None and interaction.guild.voice_client.is_playing(
+  voice = interaction.guild.voice_client
+  if voice is not None and voice.is_playing(
   ):
     interaction.guild.voice_client.stop()
     queues[interaction.guild_id].clear()
@@ -143,7 +149,8 @@ async def __stop_track(interaction: discord.Interaction):
 
 @client.tree.command(name="resume", description="Resume playback")
 async def __res_track(interaction: discord.Interaction):
-  if interaction.guild.voice_client is not None and interaction.guild.voice_client.is_paused(
+  voice = interaction.guild.voice_client
+  if voice is not None and voice.is_paused(
   ):
     interaction.guild.voice_client.resume()
     await interaction.response.send_message(embed=embeds["resume"])
@@ -153,9 +160,10 @@ async def __res_track(interaction: discord.Interaction):
 
 @client.tree.command(name="pause", description="Pause audio stream")
 async def __pause_track(interaction: discord.Interaction):
-  if interaction.guild.voice_client is not None and interaction.guild.voice_client.is_playing(
+  voice = interaction.guild.voice_client
+  if voice is not None and voice.is_playing(
   ):
-    interaction.guild.voice_client.pause()
+    voice.pause()
     await interaction.response.send_message(embed=embeds["pause"])
   else:
     await interaction.response.send_message(embed=embeds["no_audio"])
