@@ -10,7 +10,7 @@
 
 🟣 `/skip`  skips to next track in queue
 
-🟣 `/list` displays current queue
+🟣 `/tracklist` displays current queue
 
 🟣 `/pause` pauses, `/resume` resumes 
 
