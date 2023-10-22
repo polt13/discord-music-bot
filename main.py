@@ -179,14 +179,10 @@ async def __display_track_queue(interaction: discord.Interaction):
   if queues[interaction.guild_id] == []:
     await interaction.followup.send(embed=embeds["empty_queue"])
     return
-  counter = 1
-  msg = "\n"
-  for s in queues[interaction.guild_id]:
-    msg += str(counter) + ". " + s[1] + "\n"
-    counter += 1
+  msg = "\n".join(f"{index + 1}. {s[1]}" for index,s in enumerate(queues[interaction.guild_id]))
   await interaction.followup.send(embed=discord.Embed(
     title="Queue",
-    description="```" + msg + "```",
+    description="```\n" + msg + "```",
     color=discord.Color.blue(),
   ))
 
