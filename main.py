@@ -126,7 +126,7 @@ async def __next_song(server,channel):
     ):
       await voice.disconnect()
       return
-  await __disp_curr_song(channel.send, queues[server][-1][1], queues[server][-1][2])
+  await __disp_curr_song(channel.send, queues[server][0][1], queues[server][0][2])
   _vid = queues[server].pop(0)
   surl, title, thumbnail = _vid
   src = FFmpegOpusAudio(surl, **ffmpeg_options)
